@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import logo from './Images/memories.png';
 import Posts from "./Posts/Posts";
 import Form from "./Form/Form";
+import { useDispatch } from 'react-redux';
+import { fetchPostsAction } from "./actions/posts";
 import { Typography, Container, AppBar, Grid, Grow } from '@mui/material';
 
 
 const App: React.FC = () => {
  
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    dispatch(fetchPostsAction());
+  }, [dispatch])
+
   return (
     <div className='app'>
       <Container maxWidth='lg'>
@@ -19,10 +27,10 @@ const App: React.FC = () => {
           <Container>
             <Grow in>
               <Grid container justifyContent='space-between' spacing={3} alignItems='stretch' >
-                <Grid item xs={12} sm={8}>
+                <Grid item xs={12} md={8}>
                   <Posts/>
                 </Grid>
-                <Grid item xs={12} sm={8}>
+                <Grid item xs={12} md={4}>
                   <Form/>
                 </Grid>
               </Grid>
