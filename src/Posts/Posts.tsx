@@ -4,18 +4,22 @@ import { useSelector } from "react-redux";
 import { postsStateType } from '../reducers/posts';
 import Post from './Post/Post';
 
-const Posts: React.FC = () => {
+type prop = {
+    setCurrentId: Function
+
+}
+const Posts: React.FC<prop> = ({setCurrentId}) => {
+
     const data = useSelector((state: postsStateType)=>state.posts);
-    console.log(data.length);
     return (
         data.length?(
         <div style={{marginTop:'10px'}}>
             <Grid container spacing={3}>
                 {data.map((post)=>(
-                    <Grid item xs={12} sm={6} alignItems='stretch'>
+                    <Grid item xs={12} sm={6} alignItems='stretch' key={String(post._id)}>
                             <Post
-                            key={post.id}
                             post={post}
+                            setCurrentId={setCurrentId}
                             />
                     </Grid>)
                 )}

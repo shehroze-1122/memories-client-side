@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import useStyles from './postStyle';
 import moment from 'moment';
-// import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { deletePost } from '../../actions/posts';
 // import { incLikes } from '../../actions/posts';
 import { postsType } from '../../actions/posts';
 import { Card, CardHeader, Avatar, IconButton, CardMedia,CardContent, Typography, CardActions } from '@mui/material';
@@ -9,17 +10,20 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { ObjectId } from 'mongoose';
 
 type PostProps = {
-    post:postsType
+    post:postsType,
+    setCurrentId: Function
 }
-const Post: React.FC<PostProps> = ({post}) => {
+const Post: React.FC<PostProps> = ({post, setCurrentId}) => {
+
     const {creator, title, message, createdAt, likes, selectedFile, tags} = post;
 
     const [ isLiked, setIsLiked ] = useState(false);
     const [ numLikes, setNumLikes ] = useState(likes as number);
     const classes = useStyles();
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
     const handleLikes = () =>{
         // dispatch(incLikes(post));
@@ -51,6 +55,7 @@ const Post: React.FC<PostProps> = ({post}) => {
         setIsLiked(prev=>!prev);
 
     }
+
     return (
         <div>
                 <Card sx={{ maxWidth: 300 }} className={classes.card}>
@@ -61,7 +66,7 @@ const Post: React.FC<PostProps> = ({post}) => {
                         </Avatar>
                         }
                         action={
-                        <IconButton aria-label="settings">
+                        <IconButton aria-label="settings" onClick={()=>setCurrentId(post._id)}>
                             <MoreVertIcon />
                         </IconButton>
                         }
@@ -86,7 +91,7 @@ const Post: React.FC<PostProps> = ({post}) => {
                         <IconButton aria-label="add to favorites" onClick={()=>handleLikes()}>
                             {isLiked?<FavoriteIcon sx={{ color: red[500] }}/>: <FavoriteIcon />}
                         </IconButton>
-                        <IconButton aria-label="share">
+                        <IconButton aria-label="share" onClick={()=>dispatch(deletePost(post._id as ObjectId))}>
                             <DeleteIcon />
                         </IconButton>
                     </CardActions>

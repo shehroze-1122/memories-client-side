@@ -1,7 +1,7 @@
 import { Dispatch } from 'react';
-
+import { ObjectId } from 'mongoose';
 export type postsType = {
-    id?: number,
+    _id?: ObjectId,
     title: string,
     message: string,
     creator: string,
@@ -25,7 +25,7 @@ export const fetchPostsAction = ()  => async (dispatch: Dispatch<Object>) =>{
 } 
 
 export const createPost = ( postData: postsType ) => (dispatch: Dispatch<Object>) =>{
-
+    console.log('In createPost', postData)
     fetch(url, {
         method: 'post',
         headers: {'Content-Type':'application/json'},
@@ -38,6 +38,29 @@ export const createPost = ( postData: postsType ) => (dispatch: Dispatch<Object>
     })
 }
 
+export const updatePost = ( postData: postsType, id: ObjectId ) => (dispatch: Dispatch<Object>) =>{
+    fetch(url+id, {
+        method: 'put',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(postData)
+    })
+    .then((resp) =>resp.json())
+    .then((post) => {
+        dispatch({type:'UPDATE_POST', payload: post})
+    })
+}
+
+export const deletePost = (id: ObjectId) => (dispatch: Dispatch<Object>) =>{
+    fetch(url+id, {
+        method: 'delete',
+        headers: {'Content-Type': 'application/json'}
+    })
+    .then(resp=>resp.json())
+    .then(data=>{
+        console.log(data)
+        dispatch({type:'DELETE_POST', payload:id})
+    })
+}
 export const incLikes = (post: postsType) => (dispatch: Dispatch<Object>) =>{
 
     fetch( url+'likesInc', {

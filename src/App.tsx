@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import logo from './Images/memories.png';
 import Posts from "./Posts/Posts";
 import Form from "./Form/Form";
@@ -9,6 +9,7 @@ import { Typography, Container, AppBar, Grid, Grow } from '@mui/material';
 
 const App: React.FC = () => {
  
+  const [ currentId, setCurrentId ] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(()=>{
@@ -28,10 +29,10 @@ const App: React.FC = () => {
             <Grow in>
               <Grid container justifyContent='space-between' spacing={3} alignItems='stretch' >
                 <Grid item xs={12} md={8}>
-                  <Posts/>
+                  <Posts setCurrentId={setCurrentId}/>
                 </Grid>
                 <Grid item xs={12} md={4}>
-                  <Form/>
+                  <Form currentId={currentId} setCurrentId={setCurrentId}/>
                 </Grid>
               </Grid>
             </Grow>
