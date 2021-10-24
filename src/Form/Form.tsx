@@ -51,8 +51,9 @@ const Form: React.FC<prop> = ({currentId, setCurrentId}) => {
                 dispatch(createPost(postData))
             }
             setErr(false);
-            setSubmitStatus(true);
             handleClear();
+            setSubmitStatus(true);
+
         }else{
             setSubmitStatus(false);
             setErr(true);
@@ -60,6 +61,7 @@ const Form: React.FC<prop> = ({currentId, setCurrentId}) => {
     }
 
     const handleClear = () =>{
+
         setPostData({
             title: '',
             creator: '',
@@ -71,6 +73,10 @@ const Form: React.FC<prop> = ({currentId, setCurrentId}) => {
 
         const inp = document.getElementById('img-input') as HTMLInputElement;
         inp.value = '';
+
+        setSubmitStatus(false);
+        setErr(false);
+
     }
 
     const getBase64 = (e: ChangeEvent<HTMLInputElement>, cb: Function) => {
@@ -96,7 +102,7 @@ const Form: React.FC<prop> = ({currentId, setCurrentId}) => {
             {submitStatus?<Alert variant='filled' severity="success" style={{borderRadius:'0'}}>Post submitted successfully!</Alert>: null}
 
                 <Container style={{paddingTop: '20px', paddingBottom: '20px', overflow:"auto"}}>
-                    <Typography variant='h6' style={{padding:'5px'}} align='center'>CREATE POST</Typography>
+                    <Typography variant='h6' style={{padding:'5px'}} align='center'>{(post && currentId)?'EDIT POST':'CREATE POST'}</Typography>
                     <form noValidate onSubmit={handleSubmit}>
 
                         <TextField 

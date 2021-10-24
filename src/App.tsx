@@ -10,10 +10,19 @@ import { Typography, Container, AppBar, Grid, Grow } from '@mui/material';
 const App: React.FC = () => {
  
   const [ currentId, setCurrentId ] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+
   const dispatch = useDispatch();
 
   useEffect(()=>{
     dispatch(fetchPostsAction());
+
+    if (window.innerWidth > 769) {
+      setIsMobile(false);
+    } else {
+      setIsMobile(true);
+    }
+
   }, [dispatch])
 
   return (
@@ -27,7 +36,7 @@ const App: React.FC = () => {
           </AppBar>
           <Container>
             <Grow in>
-              <Grid container justifyContent='space-between' spacing={3} alignItems='stretch' >
+              <Grid container direction={isMobile?'column-reverse': 'row'} justifyContent='space-between' spacing={3} alignItems='stretch' >
                 <Grid item xs={12} md={8}>
                   <Posts setCurrentId={setCurrentId}/>
                 </Grid>

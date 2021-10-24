@@ -1,6 +1,8 @@
 import { Dispatch } from 'react';
 import { ObjectId } from 'mongoose';
+
 export type postsType = {
+
     _id?: ObjectId,
     title: string,
     message: string,
@@ -57,32 +59,30 @@ export const deletePost = (id: ObjectId) => (dispatch: Dispatch<Object>) =>{
     })
     .then(resp=>resp.json())
     .then(data=>{
-        console.log(data)
         dispatch({type:'DELETE_POST', payload:id})
     })
 }
-export const incLikes = (post: postsType) => (dispatch: Dispatch<Object>) =>{
 
-    fetch( url+'likesInc', {
+export const incLikes = (id: ObjectId) => (dispatch: Dispatch<Object>) =>{
+
+    fetch( url+`${id}/likesInc`, {
         method: 'put',
         headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify(post)
     })
     .then((resp=>resp.json()))
-    .then((posts)=>{
-        dispatch({type:'INCREMENT_LIKES', payload: posts})
+    .then((updatedPost)=>{
+        dispatch({type:'UPDATE_POST', payload: updatedPost})
     })
 }
 
-export const decLikes = (post: postsType) => (dispatch: Dispatch<Object>) =>{
+export const decLikes = (id: ObjectId) => (dispatch: Dispatch<Object>) =>{
 
-    fetch( url+'/likesDec', {
+    fetch( url+`${id}/likesDec`, {
         method: 'put',
         headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify(post)
     })
     .then((resp=>resp.json()))
-    .then((posts)=>{
-        dispatch({type:'DECREMENT_LIKES', payload: posts})
+    .then((updatedPost)=>{
+        dispatch({type:'UPDATE_POST', payload: updatedPost})
     })
 }

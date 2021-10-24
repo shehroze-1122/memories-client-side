@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import useStyles from './postStyle';
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
-import { deletePost } from '../../actions/posts';
-// import { incLikes } from '../../actions/posts';
+import { deletePost, incLikes, decLikes } from '../../actions/posts';
 import { postsType } from '../../actions/posts';
 import { Card, CardHeader, Avatar, IconButton, CardMedia,CardContent, Typography, CardActions } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -18,7 +17,7 @@ type PostProps = {
 }
 const Post: React.FC<PostProps> = ({post, setCurrentId}) => {
 
-    const {creator, title, message, createdAt, likes, selectedFile, tags} = post;
+    const { creator, title, message, createdAt, likes, selectedFile, tags } = post;
 
     const [ isLiked, setIsLiked ] = useState(false);
     const [ numLikes, setNumLikes ] = useState(likes as number);
@@ -26,32 +25,15 @@ const Post: React.FC<PostProps> = ({post, setCurrentId}) => {
     const dispatch = useDispatch();
 
     const handleLikes = () =>{
-        // dispatch(incLikes(post));
+
         if(!isLiked){
-            fetch( 'http://localhost:5000/posts/likesInc', {
-            method: 'put',
-            headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify({...post, likes: numLikes})
-        })
-        .then(resp=>resp.json())
-        .then(data=>{
-            setNumLikes(prev=>prev+1);
-        })
-        
+            dispatch(incLikes(post._id as ObjectId));
+            setNumLikes(prev=>prev+1);        
 
         }else{
-            fetch( 'http://localhost:5000/posts/likesDec', {
-            method: 'put',
-            headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify({...post, likes: numLikes})
-        })
-        .then((resp)=>resp.json())
-        .then((data)=>{
+            dispatch(decLikes(post._id as ObjectId));
             setNumLikes(prev=>prev-1);
-        })
-        
         }
-        
         setIsLiked(prev=>!prev);
 
     }
