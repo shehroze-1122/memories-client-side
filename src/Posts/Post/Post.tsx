@@ -65,7 +65,7 @@ const Post: React.FC<PostProps> = ({post, setCurrentId}) => {
                     </CardContent>
 
                     <CardContent className={classes.paddingBetween}>
-                        <Typography variant="body2" height='60px'>
+                        <Typography variant="body2" height='50px'>
                         {message}
                         </Typography>
                     </CardContent>

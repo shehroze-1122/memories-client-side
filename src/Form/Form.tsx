@@ -76,6 +76,7 @@ const Form: React.FC<prop> = ({currentId, setCurrentId}) => {
 
         setSubmitStatus(false);
         setErr(false);
+        setCurrentId(null);
 
     }
 
