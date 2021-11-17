@@ -1,3 +1,8 @@
+# Memories
+
+Full Stack application offering to create posts, edit, like, and delete them. The Client-side is powered by ReactJs, server-side with NodeJs, and MongoDB atlas cloud services serve as a database.
+
+This repository contains the client-side.The server-side can be found [here](https://github.com/shehroze-1122/memories-server-side)
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
