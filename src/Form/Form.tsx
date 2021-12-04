@@ -1,7 +1,6 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { createPost, postsType, updatePost } from '../actions/posts';
 import { useDispatch, useSelector } from 'react-redux';
-import { postsStateType } from '../reducers/posts';
 import { ObjectId } from "mongoose";
 import { TextField, Button, Typography, Paper, Container, Alert } from '@mui/material';
 import { makeStyles } from '@mui/styles';
@@ -29,7 +28,7 @@ const Form: React.FC<prop> = ({currentId, setCurrentId}) => {
     }
     });
 
-    const post = useSelector((state:postsStateType)=>state.posts.find((post: postsType)=>post._id===currentId as ObjectId));
+    const post = useSelector((state:any)=>state.assignPosts.posts.find((post: postsType)=>post._id===currentId as ObjectId));
     
     useEffect(()=>{
         if(post && currentId){

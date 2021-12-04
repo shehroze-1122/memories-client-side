@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Container, Paper, Avatar, Typography, Grid, Button } from '@mui/material';
 import useStyles from './authStyle';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -8,10 +10,10 @@ import Icon from './Icon'
 
 const Auth: React.FC = () => {
     const classes = useStyles();
-
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [ isSignUp, setIsSignUp ] = useState(true);
     const [ showPassword, setShowPassword ] = useState(false);
-
 
     const handleSubmit = () =>{
 
@@ -30,12 +32,20 @@ const Auth: React.FC = () => {
         setShowPassword(false);
     }
 
-    const googleLoginSuccess = () =>{
-
+    const googleLoginSuccess= async (res: any) =>{
+        const result = res?.profileObj;
+        const token = res?.tokenId;
+        
+        try {
+            dispatch({type:'AUTH', payload: {result, token}});
+            navigate('/');
+        } catch (error) {
+            console.log(error)
+        }
     }
 
-    const googleLoginFailure = () =>{
-        
+    const googleLoginFailure = (err: Error) =>{
+        console.log('Error occured:', err);
     }
 
     return (
@@ -64,7 +74,7 @@ const Auth: React.FC = () => {
                     </Grid>
                     <Button type='submit' fullWidth variant='contained' color='primary' className={classes.submit}>{isSignUp? 'Sign Up' : 'Sign In'}</Button>
                     <GoogleLogin
-                        clientId='sdijd'
+                        clientId='883201599656-7685gnp0fgdo492h84avttk9f6mijm11.apps.googleusercontent.com'
                         render={(renderProps)=>(
                             <Button 
                             className={classes.googleButton} 

@@ -10,7 +10,6 @@ export const initialState:postsStateType = {
 }
 
 export const assignPosts = (state=initialState, action: {type: string, payload: postsType | ObjectId}) =>{
-    
     switch(action.type){
         case FETCH_POSTS:
             return Object.assign({}, state, { posts: action.payload});

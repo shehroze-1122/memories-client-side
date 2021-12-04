@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, CircularProgress, Typography } from '@mui/material';
 import { useSelector } from "react-redux";
-import { postsStateType } from '../reducers/posts';
+import { postsType } from '../actions/posts';
 import Post from './Post/Post';
 
 type prop = {
@@ -10,12 +10,12 @@ type prop = {
 }
 const Posts: React.FC<prop> = ({setCurrentId}) => {
 
-    const data = useSelector((state: postsStateType)=>state.posts);
+    const data = useSelector((state: any)=>state.assignPosts.posts);
     return (
         data.length?(
         <div style={{marginTop:'10px', marginBottom: '50px'}}>
             <Grid container spacing={3} >
-                {data.map((post)=>(
+                {data.map((post:postsType)=>(
                     <Grid item xs={12} sm={6} alignItems='stretch' justifyContent='center' key={String(post._id)}>
                             <Post
                             post={post}
