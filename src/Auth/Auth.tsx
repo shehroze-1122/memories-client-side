@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { signin, signup } from '../actions/auth';
 import { Container, Paper, Avatar, Typography, Grid, Button } from '@mui/material';
 import useStyles from './authStyle';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -8,19 +9,41 @@ import Input from './Input';
 import { GoogleLogin } from 'react-google-login';
 import Icon from './Icon'
 
+export type formDataType = {
+    firstName?: string,
+    lastName?: string, 
+    email: string,
+    password: string,
+    confirmPassword?: string
+}
+const initialFormData: formDataType = {
+    firstName: '',
+    lastName: '',
+    email:'',
+    password:'',
+    confirmPassword: ''
+}
+
 const Auth: React.FC = () => {
+
     const classes = useStyles();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [ isSignUp, setIsSignUp ] = useState(true);
+    const [ isSignUp, setIsSignUp ] = useState(false);
+    const [ formData, setFormData ] = useState<formDataType>(initialFormData);
     const [ showPassword, setShowPassword ] = useState(false);
 
-    const handleSubmit = () =>{
-
+    const handleSubmit = (e: React.FormEvent) =>{
+        e.preventDefault();
+        if(isSignUp){
+            dispatch(signup(formData, navigate))
+        }else{
+            dispatch(signin(formData, navigate))
+        }
     }
 
-    const handleChange = () =>{
-
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) =>{
+        setFormData({...formData, [e.target.name]: e.target.value});
     }
 
     const handleShowPassword = () =>{
@@ -35,9 +58,9 @@ const Auth: React.FC = () => {
     const googleLoginSuccess= async (res: any) =>{
         const result = res?.profileObj;
         const token = res?.tokenId;
-        
+        console.log('GOGGLE', result.googleId)
         try {
-            dispatch({type:'AUTH', payload: {result, token}});
+            dispatch({type:'AUTH', payload: {user: { name: result.name, id: result.googleId }, token}});
             navigate('/');
         } catch (error) {
             console.log(error)
@@ -60,8 +83,8 @@ const Auth: React.FC = () => {
                         {
                             isSignUp && (
                                 <>
-                                    <Input name='firstname' half label='First Name' type='text' autoFocus handleChange={handleChange}/>
-                                    <Input name='lastname' half label='Last Name' type='text' handleChange={handleChange}/>
+                                    <Input name='firstName' half label='First Name' type='text' autoFocus handleChange={handleChange}/>
+                                    <Input name='lastName' half label='Last Name' type='text' handleChange={handleChange}/>
                                 </>
                             )
                         }
@@ -96,7 +119,7 @@ const Auth: React.FC = () => {
                         <Grid item>
                             { isSignUp? 'Already have a account?':'New here?'}
                             <Button onClick={switchAuthMode}>
-                                { isSignUp? 'Sign Up': 'Sign In'}
+                                { isSignUp? 'Sign In ': 'Sign Up'}
                             </Button>
                         </Grid>
                     </Grid>

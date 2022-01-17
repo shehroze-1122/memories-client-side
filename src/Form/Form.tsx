@@ -13,13 +13,16 @@ const Form: React.FC<prop> = ({currentId, setCurrentId}) => {
 
     const dispatch = useDispatch();
     const [ postData, setPostData ] = useState({
-        creator: '',
         title: '',
         message: '',
         tags: [] as string[],
         selectedFile: ''
     })
     const [ err, setErr ] = useState(false);
+    const user = JSON.parse(localStorage.getItem('profile') as string);
+    const authData =  useSelector((state:any)=>state.authReducer.authData);
+
+
     const [ submitStatus, setSubmitStatus ] = useState(false)
 
     const useStyles = makeStyles({
@@ -34,20 +37,19 @@ const Form: React.FC<prop> = ({currentId, setCurrentId}) => {
         if(post && currentId){
             setPostData(post as postsType);
         }
+
     }, [currentId, post])
     
-
     const handleSubmit = (e: React.FormEvent) =>{
         e.preventDefault();
-
-        const { creator, message, title, tags, selectedFile } = postData;
-        if(creator && message && title && tags.length && selectedFile ){
+        const { message, title, tags, selectedFile } = postData;
+        if(message && title && tags.length && selectedFile ){
             if(currentId !== null && post){
-                dispatch(updatePost(postData, currentId));
+                dispatch(updatePost({...postData, name: user.name}, currentId));
                 setCurrentId(null);
 
             }else{
-                dispatch(createPost(postData))
+                dispatch(createPost({...postData, name: user.name}))
             }
             setErr(false);
             handleClear();
@@ -63,7 +65,6 @@ const Form: React.FC<prop> = ({currentId, setCurrentId}) => {
 
         setPostData({
             title: '',
-            creator: '',
             message:'',
             tags:[],
             selectedFile: ''
@@ -94,6 +95,14 @@ const Form: React.FC<prop> = ({currentId, setCurrentId}) => {
 
     const classes = useStyles();
 
+    if(!authData && !(JSON.parse(localStorage.getItem('profile') as string))){
+        return (
+            <Paper elevation={6}>
+                <Typography variant='h6' style={{padding:'15px 8px', marginTop:'10px'}}>Please Login or SignUp to be able to create memory posts and like other's memories</Typography>
+            </Paper>
+        )
+    }
+
     return (
         <div style={{marginTop:'10px'}}>
             <Paper elevation={6}>
@@ -104,15 +113,6 @@ const Form: React.FC<prop> = ({currentId, setCurrentId}) => {
                 <Container style={{paddingTop: '20px', paddingBottom: '20px', overflow:"auto"}}>
                     <Typography variant='h6' style={{padding:'5px'}} align='center'>{(post && currentId)?'EDIT POST':'CREATE POST'}</Typography>
                     <form noValidate onSubmit={handleSubmit}>
-
-                        <TextField 
-                        className={classes.TextField} 
-                        id="outlined-basic" 
-                        fullWidth 
-                        label="Creator"
-                        variant="outlined"
-                        onChange={(e) =>setPostData({...postData, creator: e.target.value})}
-                        value={postData.creator} />
 
                         <TextField 
                         className={classes.TextField}

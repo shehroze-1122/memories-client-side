@@ -7,16 +7,22 @@ export type postsType = {
     _id?: ObjectId,
     title: string,
     message: string,
-    creator: string,
+    creator?: string,
+    name?: string,
     tags: string[],
     selectedFile: string,
-    likes?: number,
+    likes?: string[],
     createdAt?: Date
     
 }
 
-const url = 'https://memories-serverside.herokuapp.com/posts/';
+const url = 'http://localhost:5000/posts/';
 
+let token: string | null;
+
+if(localStorage.getItem('profile')){
+    token = JSON.parse(localStorage.getItem('profile') as string).token;
+}
 
 export const fetchPostsAction = ()  => async (dispatch: Dispatch<Object>) =>{ 
 
@@ -29,10 +35,18 @@ export const fetchPostsAction = ()  => async (dispatch: Dispatch<Object>) =>{
 } 
 
 export const createPost = ( postData: postsType ) => (dispatch: Dispatch<Object>) =>{
+    
+    if(localStorage.getItem('profile')){
+        token = JSON.parse(localStorage.getItem('profile') as string).token;
+    }
+    
 
     fetch(url, {
         method: 'post',
-        headers: {'Content-Type':'application/json'},
+        headers: new Headers({
+            'Content-Type':'application/json',
+            'Authorization': `Bearer ${token}`
+        }),
         body: JSON.stringify(postData)
 
     })
@@ -43,10 +57,17 @@ export const createPost = ( postData: postsType ) => (dispatch: Dispatch<Object>
 }
 
 export const updatePost = ( postData: postsType, id: ObjectId ) => (dispatch: Dispatch<Object>) =>{
-
+   
+    if(localStorage.getItem('profile')){
+        token = JSON.parse(localStorage.getItem('profile') as string).token;
+    }
+    
     fetch(url+id, {
         method: 'put',
-        headers: {'Content-Type':'application/json'},
+        headers: new Headers({
+            'Content-Type':'application/json',
+            'Authorization': `Bearer ${token}`
+        }),
         body: JSON.stringify(postData)
     })
     .then((resp) =>resp.json())
@@ -57,9 +78,16 @@ export const updatePost = ( postData: postsType, id: ObjectId ) => (dispatch: Di
 
 export const deletePost = (id: ObjectId) => (dispatch: Dispatch<Object>) =>{
 
+    if(localStorage.getItem('profile')){
+        token = JSON.parse(localStorage.getItem('profile') as string).token;
+    }
+    
     fetch(url+id, {
         method: 'delete',
-        headers: {'Content-Type': 'application/json'}
+        headers: new Headers({
+            'Content-Type':'application/json',
+            'Authorization': `Bearer ${token}`
+        }),
     })
     .then(resp=>resp.json())
     .then(data=>{
@@ -67,23 +95,18 @@ export const deletePost = (id: ObjectId) => (dispatch: Dispatch<Object>) =>{
     })
 }
 
-export const incLikes = (id: ObjectId) => (dispatch: Dispatch<Object>) =>{
+export const likePost = (id: ObjectId) => (dispatch: Dispatch<Object>) =>{
 
-    fetch( url+`${id}/likesInc`, {
+    if(localStorage.getItem('profile')){
+        token = JSON.parse(localStorage.getItem('profile') as string).token;
+    }
+    
+    fetch( url+`${id}/likePost`, {
         method: 'put',
-        headers: { 'Content-Type': 'application/json'},
-    })
-    .then((resp=>resp.json()))
-    .then((updatedPost)=>{
-        dispatch({type: UPDATE_POST, payload: updatedPost})
-    })
-}
-
-export const decLikes = (id: ObjectId) => (dispatch: Dispatch<Object>) =>{
-
-    fetch( url+`${id}/likesDec`, {
-        method: 'put',
-        headers: { 'Content-Type': 'application/json'},
+        headers: new Headers({
+            'Content-Type':'application/json',
+            'Authorization': `Bearer ${token}`
+        }),
     })
     .then((resp=>resp.json()))
     .then((updatedPost)=>{

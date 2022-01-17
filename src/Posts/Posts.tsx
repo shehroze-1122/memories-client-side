@@ -11,6 +11,7 @@ type prop = {
 const Posts: React.FC<prop> = ({setCurrentId}) => {
 
     const data = useSelector((state: any)=>state.assignPosts.posts);
+
     return (
         data.length?(
         <div style={{marginTop:'10px', marginBottom: '50px'}}>

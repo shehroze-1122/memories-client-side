@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { Grid, TextField, InputAdornment, IconButton } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
@@ -6,7 +6,7 @@ type props = {
     half?: boolean, 
     name: string,
     label: string,
-    handleChange: ()=>void,
+    handleChange: (e: ChangeEvent<HTMLInputElement>)=>void,
     autoFocus?: boolean,
     type: string,
     handleShowPassword?: ()=>void
