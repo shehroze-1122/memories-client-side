@@ -59,7 +59,6 @@ const Auth: React.FC = () => {
     const googleLoginSuccess= async (res: any) =>{
         const result = res?.profileObj;
         const token = res?.tokenId;
-        console.log('GOGGLE', result.googleId)
         try {
             dispatch({type:'AUTH', payload: {user: { name: result.name, id: result.googleId }, token}});
             navigate('/');
