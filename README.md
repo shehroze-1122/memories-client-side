@@ -4,7 +4,7 @@ The Client-side is powered by ReactJs, server-side with NodeJs, and MongoDB atla
 
 You can find the server side code [here](https://github.com/shehroze-1122/memories-server-side)
 
-Technologies Used:
+### Technologies Used:
 - ReactJs
 - NodeJs
 - Mongoose
