@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { signin, signup } from '../actions/auth';
 import { Container, Paper, Avatar, Typography, Grid, Button } from '@mui/material';
@@ -32,6 +32,7 @@ const Auth: React.FC = () => {
     const [ isSignUp, setIsSignUp ] = useState(false);
     const [ formData, setFormData ] = useState<formDataType>(initialFormData);
     const [ showPassword, setShowPassword ] = useState(false);
+    const error =  useSelector((state:any)=>state.authReducer.error);
 
     const handleSubmit = (e: React.FormEvent) =>{
         e.preventDefault();
@@ -93,6 +94,9 @@ const Auth: React.FC = () => {
                             {
                                 isSignUp && <Input name='confirmPassword' label='Repeat Password' type='password' handleChange={handleChange}/>
 
+                            }
+                            {
+                                error && <Typography variant='subtitle2' style={{padding:'3px 15px'}}>Incorrect Email or password. Please make sure you have a valid account</Typography>
                             }
                     </Grid>
                     <Button type='submit' fullWidth variant='contained' color='primary' className={classes.submit}>{isSignUp? 'Sign Up' : 'Sign In'}</Button>

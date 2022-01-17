@@ -1,6 +1,6 @@
 import { Dispatch } from 'react';
 import { NavigateFunction } from 'react-router';
-import { AUTH } from '../constants/actionTypes';
+import { AUTH, LOGIN_ERROR } from '../constants/actionTypes';
 import { formDataType } from '../Auth/Auth';
 
 const url = 'https://memories-serverside.herokuapp.com/users/';
@@ -11,16 +11,21 @@ export const signin = (formData: formDataType, navigate: NavigateFunction) => as
             method: 'post',
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify(formData)
-    
         })
         .then((resp) =>resp.json())
         .then((data) => {
+            
+            if(data.message){
+                dispatch({ type: LOGIN_ERROR })
 
-            const payload = { user: { name: data?.user.firstName+' ' + data?.user.lastName, id: data?.user._id }, token: data?.token};
-            dispatch({type: AUTH, payload })
-            navigate('/');
+            }else{
+                const payload = { user: { name: data?.user.firstName+' ' + data?.user.lastName, id: data?.user._id }, token: data?.token};
+                dispatch({type: AUTH, payload })
+                navigate('/');
+            }
+            
         })
-        
+
         .catch(()=>console.log)
 
         

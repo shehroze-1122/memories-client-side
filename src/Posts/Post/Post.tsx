@@ -22,7 +22,6 @@ const Post: React.FC<PostProps> = ({post, setCurrentId}) => {
     const user = JSON.parse(localStorage.getItem('profile') as string);
     const authData =  useSelector((state:any)=>state.authReducer.authData);
 
-    console.log(authData)
     const [ isLiked, setIsLiked ] = useState(likes?.findIndex((like)=>like===user?.id) !== -1);
     const classes = useStyles();
     const dispatch = useDispatch();
