@@ -20,6 +20,7 @@ export const signin = (formData: formDataType, navigate: NavigateFunction) => as
             dispatch({type: AUTH, payload })
             navigate('/');
         })
+        
         .catch(()=>console.log)
 
         
