@@ -3,7 +3,7 @@ import { NavigateFunction } from 'react-router';
 import { AUTH } from '../constants/actionTypes';
 import { formDataType } from '../Auth/Auth';
 
-const url = 'http://localhost:5000/users/';
+const url = 'https://memories-serverside.herokuapp.com/users/';
 
 export const signin = (formData: formDataType, navigate: NavigateFunction) => async(dispatch: Dispatch<object>) =>{
     try {
@@ -15,7 +15,7 @@ export const signin = (formData: formDataType, navigate: NavigateFunction) => as
         })
         .then((resp) =>resp.json())
         .then((data) => {
-            
+
             const payload = { user: { name: data?.user.firstName+' ' + data?.user.lastName, id: data?.user._id }, token: data?.token};
             dispatch({type: AUTH, payload })
             navigate('/');

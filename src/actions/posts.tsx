@@ -16,7 +16,7 @@ export type postsType = {
     
 }
 
-const url = 'http://localhost:5000/posts/';
+const url = 'https://memories-serverside.herokuapp.com/posts/';
 
 let token: string | null;
 
