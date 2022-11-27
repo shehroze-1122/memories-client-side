@@ -14,8 +14,6 @@ export type postsType = {
   createdAt?: Date
 }
 
-let token: string | null = localStorage.getItem('token')
-
 const url = `${process.env.REACT_APP_API_URL}/posts/`
 
 export const fetchPostsAction = () => async (dispatch: Dispatch<Object>) => {
@@ -50,7 +48,7 @@ export const createPost = (postData: postsType) => (dispatch: Dispatch<Object>) 
     method: 'post',
     headers: new Headers({
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${localStorage.getItem('token')}`
     }),
     body: JSON.stringify(postData)
   })
@@ -65,7 +63,7 @@ export const updatePost = (postData: postsType, id: ObjectId) => (dispatch: Disp
     method: 'put',
     headers: new Headers({
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${localStorage.getItem('token')}`
     }),
     body: JSON.stringify(postData)
   })
@@ -80,7 +78,7 @@ export const deletePost = (id: ObjectId) => (dispatch: Dispatch<Object>) => {
     method: 'delete',
     headers: new Headers({
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${localStorage.getItem('token')}`
     })
   })
     .then(resp => resp.json())
@@ -94,7 +92,7 @@ export const likePost = (id: ObjectId) => (dispatch: Dispatch<Object>) => {
     method: 'put',
     headers: new Headers({
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${localStorage.getItem('token')}`
     })
   })
     .then(resp => resp.json())
