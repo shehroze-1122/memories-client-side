@@ -14,13 +14,9 @@ export type postsType = {
   createdAt?: Date
 }
 
+let token: string | null = localStorage.getItem('token')
+
 const url = `${process.env.REACT_APP_API_URL}/posts/`
-
-let token: string | null
-
-if (localStorage.getItem('profile')) {
-  token = JSON.parse(localStorage.getItem('profile') as string).token
-}
 
 export const fetchPostsAction = () => async (dispatch: Dispatch<Object>) => {
   dispatch({
@@ -50,10 +46,6 @@ export const fetchPostsAction = () => async (dispatch: Dispatch<Object>) => {
 }
 
 export const createPost = (postData: postsType) => (dispatch: Dispatch<Object>) => {
-  if (localStorage.getItem('profile')) {
-    token = JSON.parse(localStorage.getItem('profile') as string).token
-  }
-
   fetch(url, {
     method: 'post',
     headers: new Headers({
@@ -69,10 +61,6 @@ export const createPost = (postData: postsType) => (dispatch: Dispatch<Object>) 
 }
 
 export const updatePost = (postData: postsType, id: ObjectId) => (dispatch: Dispatch<Object>) => {
-  if (localStorage.getItem('profile')) {
-    token = JSON.parse(localStorage.getItem('profile') as string).token
-  }
-
   fetch(url + id, {
     method: 'put',
     headers: new Headers({
@@ -88,10 +76,6 @@ export const updatePost = (postData: postsType, id: ObjectId) => (dispatch: Disp
 }
 
 export const deletePost = (id: ObjectId) => (dispatch: Dispatch<Object>) => {
-  if (localStorage.getItem('profile')) {
-    token = JSON.parse(localStorage.getItem('profile') as string).token
-  }
-
   fetch(url + id, {
     method: 'delete',
     headers: new Headers({
@@ -106,10 +90,6 @@ export const deletePost = (id: ObjectId) => (dispatch: Dispatch<Object>) => {
 }
 
 export const likePost = (id: ObjectId) => (dispatch: Dispatch<Object>) => {
-  if (localStorage.getItem('profile')) {
-    token = JSON.parse(localStorage.getItem('profile') as string).token
-  }
-
   fetch(url + `${id}/likePost`, {
     method: 'put',
     headers: new Headers({

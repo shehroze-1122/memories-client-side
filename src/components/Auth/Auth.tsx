@@ -60,7 +60,8 @@ const Auth: React.FC = () => {
     const result = res?.profileObj
     const token = res?.tokenId
     try {
-      dispatch({ type: 'AUTH', payload: { user: { name: result.name, id: result.googleId }, token } })
+      localStorage.setItem('token', token)
+      dispatch({ type: 'AUTH', payload: { name: result.name, id: result.googleId } })
       navigate('/')
     } catch (error) {}
   }
@@ -98,7 +99,7 @@ const Auth: React.FC = () => {
             )}
             {error && (
               <Typography variant="subtitle2" style={{ padding: '3px 15px' }}>
-                Incorrect Email or password. Please make sure you have a valid account
+                {error}
               </Typography>
             )}
           </Grid>
