@@ -1,7 +1,7 @@
 import React from 'react'
 import { Grid, CircularProgress, Typography } from '@mui/material'
 import { useSelector } from 'react-redux'
-import { postsType } from '../actions/posts'
+import { postsType } from '../../actions/posts'
 import Post from './Post/Post'
 
 type prop = {

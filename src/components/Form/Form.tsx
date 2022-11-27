@@ -1,5 +1,5 @@
 import React, { useState, useEffect, ChangeEvent } from 'react'
-import { createPost, postsType, updatePost } from '../actions/posts'
+import { createPost, postsType, updatePost } from '../../actions/posts'
 import { useDispatch, useSelector } from 'react-redux'
 import { ObjectId } from 'mongoose'
 import { TextField, Button, Typography, Paper, Container, Alert } from '@mui/material'

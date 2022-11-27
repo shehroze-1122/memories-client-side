@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { signin, signup } from '../actions/auth'
+import { signin, signup } from '../../actions/auth'
 import { Container, Paper, Avatar, Typography, Grid, Button } from '@mui/material'
 import useStyles from './authStyle'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'

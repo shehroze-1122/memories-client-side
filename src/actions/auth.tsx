@@ -1,7 +1,7 @@
 import { Dispatch } from 'react'
 import { NavigateFunction } from 'react-router'
 import { AUTH, LOGIN_END, LOGIN_ERROR, LOGIN_START } from '../constants/actionTypes'
-import { formDataType } from '../Auth/Auth'
+import { formDataType } from '../components/Auth/Auth'
 
 const url = `${process.env.REACT_APP_API_URL}/users/`
 

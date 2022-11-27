@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { fetchPostsAction } from '../actions/posts'
+import { fetchPostsAction } from '../../actions/posts'
 import Posts from '../Posts/Posts'
 import Form from '../Form/Form'
 import { Container, Grid, Grow } from '@mui/material'

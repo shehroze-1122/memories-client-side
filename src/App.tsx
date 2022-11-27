@@ -1,10 +1,10 @@
 import React from 'react'
 import { Container } from '@mui/material'
-import NavBar from './Nav/NavBar'
-import Home from './Home/Home'
-import { ThemeProviderComponent } from './Auth/authStyle'
+import NavBar from './components/Nav/NavBar'
+import Home from './components/Home/Home'
+import { ThemeProviderComponent } from './components/Auth/authStyle'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Auth from './Auth/Auth'
+import Auth from './components/Auth/Auth'
 
 const App: React.FC = () => {
   return (
