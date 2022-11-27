@@ -1,8 +1,9 @@
-import { AUTH, LOGOUT, LOGIN_ERROR } from '../constants/actionTypes'
+import { AUTH, LOGOUT, LOGIN_ERROR, LOGIN_START, LOGIN_END } from '../constants/actionTypes'
 
 const initialState = {
   authData: null,
-  error: false
+  error: false,
+  loading: false
 }
 export const authReducer = (
   state = initialState,
@@ -20,6 +21,10 @@ export const authReducer = (
       return Object.assign({}, state, { ...state, authData: null })
     case LOGIN_ERROR:
       return Object.assign({}, state, { ...state, error: true })
+    case LOGIN_START:
+      return Object.assign({}, state, { ...state, loading: true })
+    case LOGIN_END:
+      return Object.assign({}, state, { ...state, loading: false })
     default:
       return state
   }
