@@ -23,12 +23,30 @@ if (localStorage.getItem('profile')) {
 }
 
 export const fetchPostsAction = () => async (dispatch: Dispatch<Object>) => {
-  const resp = await fetch(url)
-  const data = await resp.json()
   dispatch({
     type: FETCH_POSTS,
-    payload: data
+    payload: {
+      postsLoading: true
+    }
   })
+  try {
+    const resp = await fetch(url)
+    const posts = await resp.json()
+    dispatch({
+      type: FETCH_POSTS,
+      payload: { posts, fetchError: false }
+    })
+  } catch (error) {
+    dispatch({
+      type: FETCH_POSTS,
+      payload: { fetchError: true }
+    })
+  } finally {
+    dispatch({
+      type: FETCH_POSTS,
+      payload: { postsLoading: false }
+    })
+  }
 }
 
 export const createPost = (postData: postsType) => (dispatch: Dispatch<Object>) => {

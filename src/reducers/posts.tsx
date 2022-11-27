@@ -4,15 +4,27 @@ import { postsType } from '../actions/posts'
 
 export type postsStateType = {
   posts: postsType[]
+  postsLoading: boolean
+  fetchError: boolean
 }
 export const initialState: postsStateType = {
-  posts: []
+  posts: [],
+  postsLoading: true,
+  fetchError: false
 }
 
-export const assignPosts = (state = initialState, action: { type: string; payload: postsType | ObjectId }) => {
+type fetchPostsType = {
+  data: postsType[]
+  loading: boolean
+  error: boolean
+}
+
+type payloadType = fetchPostsType | postsType | ObjectId
+
+export const assignPosts = (state = initialState, action: { type: string; payload: payloadType }) => {
   switch (action.type) {
     case FETCH_POSTS:
-      return Object.assign({}, state, { posts: action.payload })
+      return Object.assign({}, state, { ...action.payload })
     case CREATE_POST:
       return Object.assign({}, state, { posts: [...state.posts, action.payload] })
     case UPDATE_POST:

@@ -31,7 +31,8 @@ const Auth: React.FC = () => {
   const [isSignUp, setIsSignUp] = useState(false)
   const [formData, setFormData] = useState<formDataType>(initialFormData)
   const [showPassword, setShowPassword] = useState(false)
-  const error = useSelector((state: any) => state.authReducer.error)
+  const authStates = useSelector((state: any) => state.authReducer)
+  const { error, loading } = authStates
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -61,13 +62,7 @@ const Auth: React.FC = () => {
     try {
       dispatch({ type: 'AUTH', payload: { user: { name: result.name, id: result.googleId }, token } })
       navigate('/')
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  const googleLoginFailure = (err: Error) => {
-    console.log('Error occured:', err)
+    } catch (error) {}
   }
 
   return (
@@ -94,7 +89,12 @@ const Auth: React.FC = () => {
               handleShowPassword={handleShowPassword}
             />
             {isSignUp && (
-              <Input name="confirmPassword" label="Repeat Password" type="password" handleChange={handleChange} />
+              <Input
+                name="confirmPassword"
+                label="Repeat Password"
+                handleChange={handleChange}
+                type={showPassword ? 'text' : 'password'}
+              />
             )}
             {error && (
               <Typography variant="subtitle2" style={{ padding: '3px 15px' }}>
@@ -102,11 +102,18 @@ const Auth: React.FC = () => {
               </Typography>
             )}
           </Grid>
-          <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-            {isSignUp ? 'Sign Up' : 'Sign In'}
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            disabled={loading}
+            className={classes.submit}
+          >
+            {loading ? 'Loading...' : isSignUp ? 'Sign Up' : 'Sign In'}
           </Button>
           <GoogleLogin
-            clientId="883201599656-7685gnp0fgdo492h84avttk9f6mijm11.apps.googleusercontent.com"
+            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID as string}
             render={renderProps => (
               <Button
                 className={classes.googleButton}
@@ -114,20 +121,21 @@ const Auth: React.FC = () => {
                 color="secondary"
                 fullWidth
                 onClick={renderProps.onClick}
-                disabled={renderProps.disabled}
+                disabled={renderProps.disabled || loading}
                 startIcon={<Icon />}
               >
                 Google Sign In
               </Button>
             )}
             onSuccess={googleLoginSuccess}
-            onFailure={googleLoginFailure}
             cookiePolicy="single_host_origin"
           />
           <Grid container justifyContent="center">
             <Grid item>
               {isSignUp ? 'Already have a account?' : 'New here?'}
-              <Button onClick={switchAuthMode}>{isSignUp ? 'Sign In ' : 'Sign Up'}</Button>
+              <Button onClick={switchAuthMode} disabled={loading}>
+                {isSignUp ? 'Sign In ' : 'Sign Up'}
+              </Button>
             </Grid>
           </Grid>
         </form>
