@@ -18,8 +18,7 @@ const Form: React.FC<prop> = ({ currentId, setCurrentId }) => {
     selectedFile: ''
   })
   const [err, setErr] = useState(false)
-  const user = JSON.parse(localStorage.getItem('profile') as string)
-  const authData = useSelector((state: any) => state.authReducer.authData)
+  const user = useSelector((state: any) => state.authReducer.user)
 
   const [submitStatus, setSubmitStatus] = useState(false)
 
@@ -44,7 +43,7 @@ const Form: React.FC<prop> = ({ currentId, setCurrentId }) => {
     const { message, title, tags, selectedFile } = postData
     if (message && title && tags.length && selectedFile) {
       if (currentId !== null && post) {
-        dispatch(updatePost({ ...postData, name: user.name }, currentId))
+        dispatch(updatePost(postData, currentId))
         setCurrentId(null)
       } else {
         dispatch(createPost({ ...postData, name: user.name }))
@@ -88,7 +87,7 @@ const Form: React.FC<prop> = ({ currentId, setCurrentId }) => {
 
   const classes = useStyles()
 
-  if (!authData && !JSON.parse(localStorage.getItem('profile') as string)) {
+  if (!user) {
     return (
       <Paper elevation={6}>
         <Typography variant="h6" style={{ padding: '15px 8px', marginTop: '10px' }}>

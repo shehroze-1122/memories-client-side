@@ -18,12 +18,12 @@ type PostProps = {
 const Post: React.FC<PostProps> = ({ post, setCurrentId }) => {
   const { name, creator, title, message, createdAt, likes, selectedFile, tags } = post
 
-  const user = JSON.parse(localStorage.getItem('profile') as string)
-  const authData = useSelector((state: any) => state.authReducer.authData)
+  const user = useSelector((state: any) => state.authReducer.user)
 
   const [isLiked, setIsLiked] = useState(likes?.findIndex(like => like === user?.id) !== -1)
   const classes = useStyles()
   const dispatch = useDispatch()
+
   const handleLikes = () => {
     dispatch(likePost(post._id as ObjectId))
     setIsLiked(prev => !prev)
@@ -31,10 +31,10 @@ const Post: React.FC<PostProps> = ({ post, setCurrentId }) => {
   const numLikes = likes?.length
 
   useEffect(() => {
-    if (!authData && !JSON.parse(localStorage.getItem('profile') as string)) {
+    if (!user) {
       setIsLiked(false)
     }
-  }, [authData, user])
+  }, [user])
 
   return (
     <div>
@@ -68,11 +68,7 @@ const Post: React.FC<PostProps> = ({ post, setCurrentId }) => {
           </Typography>
         </CardContent>
         <CardActions disableSpacing className={classes.cardActions}>
-          <IconButton
-            aria-label="add to favorites"
-            onClick={() => handleLikes()}
-            disabled={!authData && !JSON.parse(localStorage.getItem('profile') as string)}
-          >
+          <IconButton aria-label="add to favorites" onClick={() => handleLikes()} disabled={!user}>
             {isLiked ? <FavoriteIcon sx={{ color: red[500] }} /> : <FavoriteIcon />}
           </IconButton>
 

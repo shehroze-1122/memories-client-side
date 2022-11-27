@@ -1,41 +1,38 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { useLocation } from 'react-router-dom'
+// import { useLocation } from 'react-router-dom'
 import logo from '../../Images/memories.png'
 import { AppBar, Typography, Toolbar, Button, Avatar } from '@mui/material'
 import { blue } from '@mui/material/colors'
-import decode from 'jwt-decode'
 
 const NavBar: React.FC = () => {
-  type userType = {
-    name: string
-    token: string
-  }
+  // type userType = {
+  //   name: string
+  //   token: string
+  // }
   const dispatch = useDispatch()
-  const location = useLocation()
+  const user = useSelector((state: any) => state.authReducer.user)
+  // const location = useLocation()
   const navigate = useNavigate()
-  const [user, setUser] = useState<userType | null>(JSON.parse(localStorage.getItem('profile') as string))
-  const token = user?.token
+  // const [user, setUser] = useState<userType | null>()
+  // const token = user?.token
 
-  const googleLogout = () => {
+  const handleLogout = useCallback(() => {
     dispatch({ type: 'LOGOUT', payload: null })
     navigate('/')
-    setUser(null)
-  }
+  }, [dispatch, navigate])
 
-  useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem('profile') as string))
-    if (token) {
-      const decodedToken: any = decode(token)
-      if (decodedToken.exp * 1000 < new Date().getTime()) {
-        dispatch({ type: 'LOGOUT', payload: null })
-        navigate('/')
-        setUser(null)
-      }
-    }
-  }, [location, token, dispatch, navigate])
+  // useEffect(() => {
+  //   setUser(JSON.parse(localStorage.getItem('profile') as string))
+  //   if (token) {
+  //     const decodedToken: any = decode(token)
+  //     if (decodedToken.exp * 1000 < new Date().getTime()) {
+  //       handleLogout()
+  //     }
+  //   }
+  // }, [location, token, dispatch, navigate, handleLogout])
 
   return (
     <AppBar position="static" color="transparent" style={{ padding: '3px 5px' }}>
@@ -70,7 +67,7 @@ const NavBar: React.FC = () => {
                 to="/"
                 color="#fff"
                 style={{ textDecoration: 'none', paddingLeft: '10px' }}
-                onClick={() => googleLogout()}
+                onClick={handleLogout}
               >
                 Logout
               </Typography>
