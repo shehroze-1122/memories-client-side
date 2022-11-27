@@ -3,7 +3,7 @@ import { NavigateFunction } from 'react-router';
 import { AUTH, LOGIN_ERROR } from '../constants/actionTypes';
 import { formDataType } from '../Auth/Auth';
 
-const url = 'https://memories-serverside.herokuapp.com/users/';
+const url = `${process.env.REACT_APP_API_URL}/users/`;
 
 export const signin = (formData: formDataType, navigate: NavigateFunction) => async(dispatch: Dispatch<object>) =>{
     try {

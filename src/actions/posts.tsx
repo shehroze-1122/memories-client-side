@@ -16,7 +16,7 @@ export type postsType = {
     
 }
 
-const url = 'https://memories-serverside.herokuapp.com/posts/';
+const url = `${process.env.REACT_APP_API_URL}/posts/`;
 
 let token: string | null;
 
