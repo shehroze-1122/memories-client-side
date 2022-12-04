@@ -15,6 +15,7 @@ export type postsType = {
 }
 
 const url = `${process.env.REACT_APP_API_URL}/posts/`
+const errorCodes = new Set([400, 401, 403, 404])
 
 export const fetchPostsAction = () => async (dispatch: Dispatch<Object>) => {
   dispatch({
@@ -53,7 +54,7 @@ export const createPost = (postData: postsType) => (dispatch: Dispatch<Object>) 
     body: JSON.stringify(postData)
   })
     .then(resp => {
-      if (resp.status === 401) {
+      if (errorCodes.has(resp.status)) {
         throw new Error("Request doesn't succeed")
       }
       return resp.json()
@@ -74,7 +75,7 @@ export const updatePost = (postData: postsType, id: ObjectId) => (dispatch: Disp
     body: JSON.stringify(postData)
   })
     .then(resp => {
-      if (resp.status === 401) {
+      if (errorCodes.has(resp.status)) {
         throw new Error("Request doesn't succeed")
       }
       return resp.json()
@@ -94,7 +95,7 @@ export const deletePost = (id: ObjectId) => (dispatch: Dispatch<Object>) => {
     })
   })
     .then(resp => {
-      if (resp.status === 401) {
+      if (errorCodes.has(resp.status)) {
         throw new Error("Request doesn't succeed")
       }
       return resp.json()
@@ -114,7 +115,7 @@ export const likePost = (id: ObjectId) => (dispatch: Dispatch<Object>) => {
     })
   })
     .then(resp => {
-      if (resp.status === 401) {
+      if (errorCodes.has(resp.status)) {
         throw new Error("Request doesn't succeed")
       }
       return resp.json()
