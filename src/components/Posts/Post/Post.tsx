@@ -46,9 +46,11 @@ const Post: React.FC<PostProps> = ({ post, setCurrentId }) => {
             </Avatar>
           }
           action={
-            <IconButton aria-label="settings" onClick={() => setCurrentId(post._id)}>
-              <MoreVertIcon />
-            </IconButton>
+            user && user.id === post.creator ? (
+              <IconButton aria-label="settings" onClick={() => setCurrentId(post._id)}>
+                <MoreVertIcon />
+              </IconButton>
+            ) : null
           }
           title={name}
           subheader={moment(createdAt).fromNow()}
