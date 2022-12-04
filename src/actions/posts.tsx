@@ -52,10 +52,16 @@ export const createPost = (postData: postsType) => (dispatch: Dispatch<Object>) 
     }),
     body: JSON.stringify(postData)
   })
-    .then(resp => resp.json())
+    .then(resp => {
+      if (resp.status === 401) {
+        throw new Error("Request doesn't succeed")
+      }
+      return resp.json()
+    })
     .then(post => {
       dispatch({ type: CREATE_POST, payload: post })
     })
+    .catch(() => {})
 }
 
 export const updatePost = (postData: postsType, id: ObjectId) => (dispatch: Dispatch<Object>) => {
@@ -67,10 +73,16 @@ export const updatePost = (postData: postsType, id: ObjectId) => (dispatch: Disp
     }),
     body: JSON.stringify(postData)
   })
-    .then(resp => resp.json())
+    .then(resp => {
+      if (resp.status === 401) {
+        throw new Error("Request doesn't succeed")
+      }
+      return resp.json()
+    })
     .then(post => {
       dispatch({ type: UPDATE_POST, payload: post })
     })
+    .catch(() => {})
 }
 
 export const deletePost = (id: ObjectId) => (dispatch: Dispatch<Object>) => {
@@ -81,10 +93,16 @@ export const deletePost = (id: ObjectId) => (dispatch: Dispatch<Object>) => {
       Authorization: `Bearer ${localStorage.getItem('token')}`
     })
   })
-    .then(resp => resp.json())
+    .then(resp => {
+      if (resp.status === 401) {
+        throw new Error("Request doesn't succeed")
+      }
+      return resp.json()
+    })
     .then(data => {
       dispatch({ type: DELETE_POST, payload: id })
     })
+    .catch(() => {})
 }
 
 export const likePost = (id: ObjectId) => (dispatch: Dispatch<Object>) => {
@@ -95,8 +113,14 @@ export const likePost = (id: ObjectId) => (dispatch: Dispatch<Object>) => {
       Authorization: `Bearer ${localStorage.getItem('token')}`
     })
   })
-    .then(resp => resp.json())
+    .then(resp => {
+      if (resp.status === 401) {
+        throw new Error("Request doesn't succeed")
+      }
+      return resp.json()
+    })
     .then(updatedPost => {
       dispatch({ type: UPDATE_POST, payload: updatedPost })
     })
+    .catch(() => {})
 }
